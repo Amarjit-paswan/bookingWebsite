@@ -1,16 +1,14 @@
 <?php 
 
-//Include UserRepository
-require_once '../app/repositories/UserRepository.php';
 
 class AuthService
 {
     private $userRepository;
 
     //Constructor
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
-        $this->userRepository = new UserRepository();
+        $this->userRepository = $userRepository;
     }
 
     //Register User
@@ -45,34 +43,7 @@ class AuthService
         ];
     }
 
-    //Login User
-    public function login($email, $password)
-    {
-        //Find User
-        $user = $this->userRepository->findByEmail($email);
-
-        if(!$user){
-            return [
-                'success' => false,
-                'message' => 'User not found'
-            ];
-        }
-
-        //Verify Password
-        if(!password_verify($password, $user['password'])){
-            return [
-                'success' => false,
-                'message' => 'Invalid Password'
-            ];
-        }
-
-        //Success
-        return [
-            'success' => true,
-            'message' => 'Login Successfully',
-            'user' => $user
-        ];
-    }
+  
 }
 
 ?>

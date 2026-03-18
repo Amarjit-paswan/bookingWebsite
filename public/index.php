@@ -1,17 +1,27 @@
 <?php 
 
 
-//load router class
-require_once './app/core/Router.php';
+require_once  __DIR__ . '../../app/core/Container.php';
+require_once  __DIR__ . '../../app/repositories/UserRepository.php';
+require_once  __DIR__ . '../../app/services/Login/EmailLogin.php';
+require_once  __DIR__ . '../../app/services/Login/OtpLogin.php';
+require_once  __DIR__ . '../../app/services/AuthService.php';
 
-//create a router object
-$router = new Router();
+$container = new Container();
 
-//Load the route definitions
-require_once './app/routes/web.php';
+//Repository
+$container->bind('UserRepository', function(){
+    return new UserRepository();
+});
 
-//Handle the current request
-$router->resolve();
+//Strategies
+$container->bind('EmailLogin', function($c) {
+    return new EmailLogin($c->make('UserRepository'));
+});
+
+$container->bind('OtpLogin', function($c){
+    return new OtpLogin();
+});
 
 
 
