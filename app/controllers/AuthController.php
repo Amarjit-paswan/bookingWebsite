@@ -14,16 +14,20 @@ class AuthController{
 
     public function login(){
 
-        $validator = $this->container->make('LoginValidator');
+        $data = json_decode(file_get_contents("php://input"), true);
 
-        $validator->validate($_POST);
+        $type = $data['type'] ?? 'email';
 
-        $type = $_POST['type'] ?? 'email';
+        //Validation Strategy
+        $validationFactory = new ValidationFactory($this->container);
 
-        $factory = new LoginFactory($this->container);
+        $validator = $validationFactory->make($type);
 
-        $strategy = $factory->make($type);
+        $validator->validate($data);
 
+        $loginfactory = new LoginFactory($this->container);
+
+        $strategy = $loginfactory->make($type);
 
         $result = $strategy->login($_POST);
 

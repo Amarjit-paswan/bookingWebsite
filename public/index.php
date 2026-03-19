@@ -25,7 +25,14 @@ $container->bind('OtpLogin', function($c){
 
 $container->bind('LoginValidator', function(){
     return new LoginValidator();
-})
+});
 
+$container->bind('EmailValidation', function(){
+    return new EmailValidation();
+});
+
+$container->bind('OtpValidation', function(){
+    return new OtpValidation();
+});
 
 ?>
