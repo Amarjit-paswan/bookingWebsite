@@ -1,6 +1,7 @@
 <?php 
 
 require_once __DIR__ . '../../factories/LoginFactory.php';
+require_once __DIR__ . '../../validators/LoginValidator.php';
 
 class AuthController{
 
@@ -13,17 +14,20 @@ class AuthController{
 
     public function login(){
 
+        $validator = $this->container->make('LoginValidator');
+
+        $validator->validate($_POST);
+
         $type = $_POST['type'] ?? 'email';
 
         $factory = new LoginFactory($this->container);
 
         $strategy = $factory->make($type);
 
-        $authService = new AuthService($strategy);
 
-        $result = $authService->login($_POST);
+        $result = $strategy->login($_POST);
 
-        print_r($result);
+        echo json_encode($result);
     }
 }
 
