@@ -11,7 +11,7 @@ public static function handle($exception){
     echo json_encode([
         'status' => 'error',
         'message' => $exception->getMessage(),
-        'code' => $exception->getCode()
+        'code' => $statusCode
     ]);
 }
 
