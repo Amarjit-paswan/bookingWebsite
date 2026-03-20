@@ -7,6 +7,8 @@ require_once  __DIR__ . '../../app/services/Login/EmailLogin.php';
 require_once  __DIR__ . '../../app/services/Login/OtpLogin.php';
 require_once  __DIR__ . '../../app/services/AuthService.php';
 
+require_once __DIR__ . '../../app/core/ExceptionHandler.php';
+
 $container = new Container();
 
 //Repository
