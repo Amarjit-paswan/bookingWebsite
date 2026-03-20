@@ -16,22 +16,28 @@ class AuthController{
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $type = $data['type'] ?? 'email';
+        $pipeline = new Pipeline();
 
-        //Validation Strategy
-        $validationFactory = new ValidationFactory($this->container);
+        return $pipeline->send($data)->through([
+            new AuthMiddleware(), 
+        ])
+        ->then(function ($request){
+            //Validation Strategy
+            $validationFactory = new ValidationFactory($this->container);
 
-        $validator = $validationFactory->make($type);
+            $validator = $validationFactory->make($request['type']);
 
-        $validator->validate($data);
+            $validator->validate($request);
 
-        $loginfactory = new LoginFactory($this->container);
+            $loginfactory = new LoginFactory($this->container);
 
-        $strategy = $loginfactory->make($type);
+            $strategy = $loginfactory->make($request['type']);
 
-        $result = $strategy->login($_POST);
+            return $strategy->login($request);
 
-        echo json_encode($result);
+            });
+
+        
     }
 }
 
