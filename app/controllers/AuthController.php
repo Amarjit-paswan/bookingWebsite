@@ -19,6 +19,7 @@ class AuthController{
         $pipeline = new Pipeline();
 
         return $pipeline->send($data)->through([
+            new RateLimitMiddleware(),
             new AuthMiddleware(), 
         ])
         ->then(function ($request){
