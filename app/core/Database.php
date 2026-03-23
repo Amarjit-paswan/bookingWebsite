@@ -30,6 +30,19 @@ class Database
     public function getConnection(){
         return $this->connection;
     }
+
+    //Transaction methods
+    public function beginTransaction(){
+        $this->connection->beginTransaction();
+    }
+
+    public function commit(){
+        $this->connection->commit();
+    }
+
+    public function rollback(){
+        $this->connection->rollback();
+    }
 }
 
 
